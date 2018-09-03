@@ -1,17 +1,23 @@
-import * as secp256k1 from 'secp256k1';
-import { randomBytes, createHash } from 'crypto';
+import * as secp256k1 from "secp256k1";
+import { randomBytes, createHash } from "crypto";
 
 
 /**
- * This module is essentially identical to part-one's signing module.
+ * This module is essentially identical to part-one"s signing module.
  * Feel free to copy in your solution from there.
  *
  * This function generates a random Secp256k1 private key, returning it as
  * a 64 character hex string.
  */
 export const createPrivateKey = () => {
-  // Enter your solution here
-
+    // Enter your solution here
+    let privKey;
+    do {
+        privKey = randomBytes(32);
+    } while (!secp256k1.privateKeyVerify(privKey));
+    return privKey.toString("hex");
+    // let privKey = randomBytes(32);
+    // return privKey;
 };
 
 /**
@@ -19,12 +25,14 @@ export const createPrivateKey = () => {
  * 66 character hexadecimal string.
  */
 export const getPublicKey = privateKey => {
-  // Your code here
+    // Your code here
+    const buf = Buffer.from(privateKey, "hex");
+    return secp256k1.publicKeyCreate(buf).toString("hex");
 
 };
 
 /**
- * This convenience function did not exist in part-one's signing module, but
+ * This convenience function did not exist in part-one"s signing module, but
  * should be simple to implement. It creates both private and public keys,
  * returning them in an object with two properties:
  *   - privateKey: the hex private key
@@ -34,13 +42,16 @@ export const getPublicKey = privateKey => {
  *   const keys = createKeys();
  *   console.log(keys);
  *   // {
- *   //   privateKey: 'e291df3eede7f0c520fddbe5e9e53434ff7ef3c0894ed9d9cbc...',
- *   //   publicKey: '0202694593ddc71061e622222ed400f5373cfa7ea607ce106cca...'
+ *   //   privateKey: "e291df3eede7f0c520fddbe5e9e53434ff7ef3c0894ed9d9cbc...",
+ *   //   publicKey: "0202694593ddc71061e622222ed400f5373cfa7ea607ce106cca..."
  *   // }
  */
 export const createKeys = () => {
-  // Your code here
-
+    // Your code here
+    let keys = {};
+    keys.privateKey = createPrivateKey();
+    keys.publicKey = getPublicKey(keys.privateKey);
+    return keys;
 };
 
 /**
@@ -48,6 +59,11 @@ export const createKeys = () => {
  * hexadecimal signature.
  */
 export const sign = (privateKey, message) => {
-  // Your code here
+    // Your code here
+    var hash = createHash("sha256").update(message).digest();
+    const buf = Buffer.from(privateKey, "hex");
+
+    let signature = secp256k1.sign(hash, buf);
+    return signature.signature.toString("hex");
 
 };

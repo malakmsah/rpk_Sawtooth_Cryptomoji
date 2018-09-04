@@ -33,7 +33,7 @@ export const hash512 = (str) => {
 export const createTransaction = (privateKey, payload) => {
     const encodedPayload = encode(payload);
     const publicKey = getPublicKey(privateKey);
-    const hashedPayload = createHash("sha512").update(encodedPayload).digest("hex");
+    const hashedPayload = hash512(encodedPayload);
 
     const header = TransactionHeader.encode({
         familyName: FAMILY_NAME,

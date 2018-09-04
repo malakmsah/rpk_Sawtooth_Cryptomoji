@@ -8,7 +8,7 @@ const {decode} = require("./services/encoding");
 const FAMILY_NAME = "cryptomoji";
 const FAMILY_VERSION = "0.1";
 const NAMESPACE = "5f4d76";
-const ALLOWED_ACTIONS = ['create', 'transfer', 'delete'];
+const ALLOWED_ACTIONS = ['CREATE_COLLECTION', 'SELECT_SIRE', 'BREED_MOJI', 'CREATE_OFFER', 'CANCEL_OFFER', 'ADD_RESPONSE', 'ACCEPT_RESPONSE'];
 
 /**
  * A Cryptomoji specific version of a Hyperledger Sawtooth Transaction Handler.
